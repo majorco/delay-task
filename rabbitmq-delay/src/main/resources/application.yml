@@ -1,0 +1,12 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirm-type: correlated #发布确认
+    publisher-returns: true #路由失败 消息回退
+delayed:
+  queue: delayed-queue
+  exchange: delayed-exchange
+  routingKey: delayed-routingKey
