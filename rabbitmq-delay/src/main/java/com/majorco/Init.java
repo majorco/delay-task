@@ -23,7 +23,7 @@ public class Init implements ApplicationRunner {
   public void run(ApplicationArguments args) {
     for (int i = 0; i < 100; i++) {
       rabbitTemplate.convertAndSend(configuration.getExchange(), configuration.getRoutingKey(),
-          RabbitDelayTask.builder().taskId(String.valueOf(i)).build().toString(), message -> {
+          RabbitDelayTask.builder().taskId(String.valueOf(i)).build(), message -> {
             message.getMessageProperties().setDelay(5000);
             return message;
           });

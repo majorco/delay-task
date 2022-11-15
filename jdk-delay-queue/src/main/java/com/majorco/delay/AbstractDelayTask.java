@@ -6,21 +6,19 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author xxxiao
  **/
 @Data
 @EqualsAndHashCode
-public abstract class DelayTask implements Delayed, Runnable {
+@Slf4j
+public abstract class AbstractDelayTask implements Delayed, Runnable {
 
-  private String taskId;
-  private LocalDateTime invokeTime;
+  protected String taskName;
+  protected LocalDateTime invokeTime;
 
-  protected DelayTask(String taskId, LocalDateTime invokeTime) {
-    this.taskId = taskId;
-    this.invokeTime = invokeTime;
-  }
 
   /**
    * unit默认纳秒级别 支持毫米级别延迟
@@ -36,10 +34,17 @@ public abstract class DelayTask implements Delayed, Runnable {
 
   @Override
   public int compareTo(Delayed delayed) {
-    if (!(delayed instanceof DelayTask)) {
+    if (!(delayed instanceof AbstractDelayTask)) {
       throw new IllegalArgumentException("args type incorrect");
     }
-    DelayTask other = (DelayTask) delayed;
+    AbstractDelayTask other = (AbstractDelayTask) delayed;
     return this.invokeTime.compareTo(other.getInvokeTime());
   }
+
+  @Override
+  public final void run() {
+    this.runAs();
+  }
+
+  protected abstract void runAs();
 }

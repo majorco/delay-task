@@ -22,6 +22,11 @@
         <groupId>org.springframework.kafka</groupId>
         <version>${spring-kafka}</version>
       </dependency>
+      <dependency>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <groupId>com.baomidou</groupId>
+        <version>${mybatis-plus-boot-starter}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <groupId>com.majorco</groupId>
@@ -38,6 +43,7 @@
     <spring-boot-starter-amqp>2.4.7</spring-boot-starter-amqp>
     <spring-boot-version>2.6.13</spring-boot-version>
     <spring-kafka>2.8.10</spring-kafka>
+    <mybatis-plus-boot-starter>3.4.3.4</mybatis-plus-boot-starter>
   </properties>
   <version>0.0.1-SNAPSHOT</version>
 </project>
