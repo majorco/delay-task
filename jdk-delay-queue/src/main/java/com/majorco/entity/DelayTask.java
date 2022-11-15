@@ -25,43 +25,49 @@ import lombok.experimental.Accessors;
 @Builder
 public class DelayTask implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+  /**
+   * 主键id
+   */
+  @TableId(value = "id", type = IdType.INPUT)
+  private Long id;
 
-    /**
-     * 任务名字
-     */
-    private String taskName;
+  /**
+   * 任务名字
+   */
+  private String taskName;
+  /**
+   * 任务描述
+   */
+  private String taskDescription;
+  /**
+   * 创建时间
+   */
+  private LocalDateTime createTime;
 
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
+  private LocalDateTime updateTime;
 
-    private LocalDateTime updateTime;
-
-    /**
-     * 任务指定的执行时间
-     */
-    private LocalDateTime invokeTime;
-
-    /**
-     * 是否已经执行
-     */
-    private Boolean isInvoked;
-    /**
-     * 逻辑删除
-     */
-    private Boolean isDelete;
-    /**
-     * 类信息
-     */
-    private String classInfo;
+  /**
+   * 任务指定的执行时间
+   */
+  private LocalDateTime invokeTime;
+  /**
+   * 是否已经执行
+   */
+  private Boolean isInvoked;
+  /**
+   * 是否是执行失败的任务
+   */
+  private Boolean isFailed;
+  /**
+   * 逻辑删除
+   */
+  private Boolean isDelete;
+  /**
+   * 类信息
+   */
+  private String classInfo;
 
 
 }

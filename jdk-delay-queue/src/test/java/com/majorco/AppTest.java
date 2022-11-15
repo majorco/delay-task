@@ -30,7 +30,7 @@ public class AppTest {
   public static void main(String[] args) throws IOException {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     final LocalDateTime parse = LocalDateTime.parse("2022-11-14 16:45:11", dateTimeFormatter);
-    TestTask testTask = new TestTask("5656", parse, "666");
+    TestTask testTask = new TestTask("5656", parse, "666", "我是任务");
     RestTemplate restTemplate = new RestTemplate();
     restTemplate.postForEntity("http://127.0.0.1:8080/task", testTask, Void.class);
   }

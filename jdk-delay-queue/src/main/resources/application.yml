@@ -10,3 +10,6 @@ spring:
     url: jdbc:mysql:///demo
     username: root
     password: root
+logging:
+  level:
+    com.majorco.mapper.DelayTaskMapper: debug

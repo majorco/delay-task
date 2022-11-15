@@ -1,4 +1,4 @@
-package com.majorco.support;
+package com.majorco.delay.support;
 
 import com.majorco.delay.AbstractDelayTask;
 
@@ -15,11 +15,16 @@ public interface Persistence {
   /**
    * 运行时添加任务
    */
-  boolean addDelayTask(AbstractDelayTask delayTask);
+  boolean addDelayTaskRuntime(AbstractDelayTask delayTask);
 
   /**
    * 运行时删除任务
    */
   boolean removeDelayTask(AbstractDelayTask delayTask);
+
+
+  void runAfter(AbstractDelayTask delayTask);
+
+  void retry(AbstractDelayTask delayTask);
 
 }

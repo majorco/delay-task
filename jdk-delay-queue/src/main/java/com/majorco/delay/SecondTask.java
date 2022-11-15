@@ -29,9 +29,9 @@ public class SecondTask extends AbstractDelayTask {
   }
 
   @Override
-  public void runAs() {
+  public void start() {
     log.info(Thread.currentThread().getName());
-    Thread.currentThread().interrupt();
+
     log.info("延时任务: {}", taskName);
   }
 }

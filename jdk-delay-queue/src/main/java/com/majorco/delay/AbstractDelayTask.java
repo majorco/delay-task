@@ -16,12 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractDelayTask implements Delayed, Runnable {
 
+  protected String taskDescription;
+  private Integer retryCount = 1;
   protected String taskName;
   protected LocalDateTime invokeTime;
-
+  private Long taskId;
 
   /**
-   * unit默认纳秒级别 支持毫米级别延迟
+   * unit默认纳秒 这里精确到毫米
    *
    * @param unit the time unit
    * @return long
@@ -43,8 +45,8 @@ public abstract class AbstractDelayTask implements Delayed, Runnable {
 
   @Override
   public final void run() {
-    this.runAs();
+    this.start();
   }
 
-  protected abstract void runAs();
+  protected abstract void start();
 }
