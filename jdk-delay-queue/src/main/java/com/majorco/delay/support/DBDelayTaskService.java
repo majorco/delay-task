@@ -7,7 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.majorco.delay.AbstractDelayTask;
 import com.majorco.delay.AbstractTaskService;
+import com.majorco.delay.TestTask;
 import com.majorco.entity.DelayTask;
+import com.majorco.exception.JsonException;
 import com.majorco.exception.RepeatTask;
 import com.majorco.service.DelayTaskRepository;
 import java.time.LocalDateTime;
@@ -31,17 +33,28 @@ public class DBDelayTaskService extends AbstractTaskService {
     this.classInfoObjectMapper = classInfoObjectMapper;
   }
 
+  /**
+   * 想要实现添加而实现更新目的,请手动remove它
+   * 添加了就会执行,除非手动删除它,可以继承自AbstractTaskService根据指定的属性重写equals方法
+   * 在加入之前先remove delayTask,从而达到更新执行时间的目的
+   *
+   * @param delayTask extends AbstractDelayTask
+   * @return 添加成功
+   * @see TestTask
+   */
   @Override
   public boolean addDelayTaskRuntime(AbstractDelayTask delayTask) {
     if (!delayQueue.contains(delayTask)) {
+      // 获取 mybatis-plus 默认id生成器
       final DefaultIdentifierGenerator generator = new DefaultIdentifierGenerator();
       final Long nextId = generator.nextId(DelayTask.class);
       delayTask.setTaskId(nextId);
       String classInfo;
       try {
+        //序列化类
         classInfo = classInfoObjectMapper.writeValueAsString(delayTask);
       } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
+        throw new JsonException("序列化异常");
       }
       final DelayTask task = DelayTask.builder()
           .id(nextId)
@@ -92,10 +105,14 @@ public class DBDelayTaskService extends AbstractTaskService {
         .updateTime(LocalDateTime.now())
         .build();
     final LambdaUpdateWrapper<DelayTask> update = Wrappers.lambdaUpdate();
+    //更新任务已经执行
     update.eq(DelayTask::getId, delayTask.getTaskId());
     delayTaskRepository.getBaseMapper().update(build, update);
   }
 
+  /**
+   * 重试三次 一共执行4次 失败丢弃不在执行,间隔10秒
+   */
   @Override
   public void retry(AbstractDelayTask delayTask) {
     Integer retryCount = delayTask.getRetryCount();

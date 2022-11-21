@@ -16,10 +16,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractDelayTask implements Delayed, Runnable {
 
+  /**
+   * 任务描述
+   */
   protected String taskDescription;
-  private Integer retryCount = 1;
+  /**
+   * 任务名字
+   */
   protected String taskName;
+  /**
+   * 任务执行时间
+   */
   protected LocalDateTime invokeTime;
+  /**
+   * 重试计数
+   */
+  private Integer retryCount = 1;
+  /**
+   * 任务id 默认由mp雪花算法生成,调用setTaskId无效
+   */
   private Long taskId;
 
   /**

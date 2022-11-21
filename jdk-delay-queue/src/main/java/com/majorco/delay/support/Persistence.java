@@ -22,9 +22,15 @@ public interface Persistence {
    */
   boolean removeDelayTask(AbstractDelayTask delayTask);
 
+  /**
+   * 任务运行成功后的处理
+   */
 
   void runAfter(AbstractDelayTask delayTask);
 
+  /**
+   * 失败重试
+   */
   void retry(AbstractDelayTask delayTask);
 
 }

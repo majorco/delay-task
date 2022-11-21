@@ -7,12 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author xxxiao
+ * 其他持久化任务的方式直接继承此类
  **/
 @Slf4j
 public abstract class AbstractTaskService extends AbstractPersistence {
 
-  @SuppressWarnings({"InfiniteLoopStatement"})
   protected AbstractTaskService() {
+    // 单线程无界队列
     final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor(
         r -> {
           final Thread delayTaskThread = new Thread(r, "delayTaskThread");
@@ -21,6 +22,7 @@ public abstract class AbstractTaskService extends AbstractPersistence {
         });
     singleThreadExecutor.execute(() -> {
       for (; ; ) {
+        // 当前线程如果被打上中断标记,程序无法正常运行,线程池中断
         if (Thread.currentThread().isInterrupted()) {
           return;
         }
@@ -29,9 +31,11 @@ public abstract class AbstractTaskService extends AbstractPersistence {
         try {
           delayTask = delayQueue.take();
           delayTask.run();
+          //任务运行成功后执行的逻辑
           runAfter(delayTask);
           log.info("delayed task invoke success: {} ", delayTask.getTaskName());
         } catch (InterruptedException ex) {
+          //中断标记
           Thread.currentThread().interrupt();
           ex.printStackTrace();
         } catch (Exception e) {

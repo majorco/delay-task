@@ -12,11 +12,10 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- *
+ * 数据库实体类
  * </p>
  *
  * @author xxxiao
- * @since 2022-11-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -45,7 +44,9 @@ public class DelayTask implements Serializable {
    * 创建时间
    */
   private LocalDateTime createTime;
-
+  /**
+   * 更新时间,如果任务没有正常结束,数据库将为null
+   */
   private LocalDateTime updateTime;
 
   /**
@@ -61,7 +62,7 @@ public class DelayTask implements Serializable {
    */
   private Boolean isFailed;
   /**
-   * 逻辑删除
+   * 逻辑删除,未使用mp插件,不能自动拼接 is_delete=false
    */
   private Boolean isDelete;
   /**
